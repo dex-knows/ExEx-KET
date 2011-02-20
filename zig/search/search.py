@@ -67,24 +67,67 @@ def tinyMazeSearch(problem):
   w = Directions.WEST
   return  [s,s,w,s,w,w,s,w]
 
-def depthFirstSearch(problem):
-  """
-  Search the deepest nodes in the search tree first
-  [2nd Edition: p 75, 3rd Edition: p 87]
-  
-  Your search algorithm needs to return a list of actions that reaches
-  the goal.  Make sure to implement a graph search algorithm 
-  [2nd Edition: Fig. 3.18, 3rd Edition: Fig 3.7].
-  
-  To get started, you might want to try some of these simple commands to
-  understand the search problem that is being passed in:
-  
-  print "Start:", problem.getStartState()
-  print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-  print "Start's successors:", problem.getSuccessors(problem.getStartState())
-  """
-  "*** YOUR CODE HERE ***"
+class Node(object):
+    """Basic representation of a node on a map/tree.
+       """
+    def __init__(self, value, parent=None):
+        """Value is exepected to be a triple with the following parts:
+            1. Coordinate tupel (x,y)
+            2. Direction string (e.g. "west)
+            3. Path cost as an integer (e.g. 1)
+        Parent is a coordinate.
+           """
+        self.coordinate = value[0]
+        self.direction = value[1]
+        self.cost = value[2]
+        self.parent = parent
 
+def depthFirstSearch(problem):
+    """
+    Search the deepest nodes in the search tree first
+    [2nd Edition: p 75, 3rd Edition: p 87]
+    
+    Your search algorithm needs to return a list of actions that reaches
+    the goal.  Make sure to implement a graph search algorithm 
+    [2nd Edition: Fig. 3.18, 3rd Edition: Fig 3.7].
+      
+    To get started, you might want to try some of these simple commands to
+    understand the search problem that is being passed in:
+      
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print "Start's successors:", problem.getSuccessors(problem.getStartState())
+    """
+    "*** YOUR CODE HERE ***"
+    starting_position = problem.getStartState()
+    current_node = Node((starting_position, "", 0)) 
+    
+    fringe_nodes = []
+    current_path = [starting_position] 
+
+    while not problem.isGoalState(current_node.coordinate):
+        for successor in problem.getSuccessors(current_node.coordinate):
+            fringe_nodes.append(Node(successor, current_node.coordinate))
+        next_node = fringe_nodes.pop()
+
+        # if the next fringe node is not a child of the last node in our path...
+        if not next_node.parent == current_path[:-1]:
+            # Pop nodes off our current path until it has the next_node as a child 
+            while next_node.parent == current_path[:-1]:
+                current_path.pop()  
+
+        # Add it to our path and continue descending the tree.
+        current_path.append(next_node.coordinate) 
+
+        current_node = next_node
+
+    if problem.isGoalState(current_node.coordinate):
+        print "GOAL:", current_path
+    else:
+        print "Failed:", current_path
+        
+        
+        
 def breadthFirstSearch(problem):
   """
   Search the shallowest nodes in the search tree first.
