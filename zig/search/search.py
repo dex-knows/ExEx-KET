@@ -96,7 +96,7 @@ def depthFirstSearch(problem):
     
     all_nodes = [starting_position]    # List of coordinates
     fringe_nodes = []                  # List of nodes (we need to know its' parent)
-    current_path = [starting_position] # List of coordinates 
+    current_path = [current_node]      # List of coordinates 
     solution = []                      # List of directions from game module
 
     while not problem.isGoalState(current_node.coordinate):
@@ -109,13 +109,13 @@ def depthFirstSearch(problem):
         next_node = fringe_nodes.pop()
 
         # if the next fringe node is not a child of the last node in our path...
-        if not next_node.parent == current_path[-1]:
+        if not next_node.parent == current_path[-1].coordinate:
             # Pop nodes off our current path until it has the next_node as a child 
-            while next_node.parent != current_path[-1]:
+            while next_node.parent != current_path[-1].coordinate:
                 current_path.pop()  
 
         # Add it to our path and continue descending the tree.
-        current_path.append(next_node.coordinate) 
+        current_path.append(next_node) 
         current_node = next_node
 
     if not problem.isGoalState(current_node.coordinate):
@@ -123,21 +123,17 @@ def depthFirstSearch(problem):
     else:
         # Take our curren_path and turn it into a list of directions 
         last_coordinate = starting_position
-        for coordinate in current_path:
-            if coordinate != starting_position:
-                for successor in problem.getSuccessors(last_coordinate):
-                    if successor[0] == coordinate:
-                        if   successor[1] == "West":
-                            solution.append(w)
-                        elif successor[1] == "South":
-                            solution.append(s)
-                        elif successor[1] == "North":
-                            solution.append(n)
-                        elif successor[1] == "East":
-                            solution.append(e)
-         
-            last_coordinate = coordinate
-
+        for node in current_path:
+            if node.coordinate != starting_position:
+                direction = node.direction
+                if   direction == "West":
+                    solution.append(w)
+                elif direction == "South":
+                    solution.append(s)
+                elif direction == "North":
+                    solution.append(n)
+                elif direction == "East":
+                    solution.append(e)
     return solution   
         
 def breadthFirstSearch(problem):
