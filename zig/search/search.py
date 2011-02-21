@@ -83,22 +83,8 @@ class Node(object):
         self.parent = parent
 
 def depthFirstSearch(problem):
-    """
-    Search the deepest nodes in the search tree first
-    [2nd Edition: p 75, 3rd Edition: p 87]
-    
-    Your search algorithm needs to return a list of actions that reaches
-    the goal.  Make sure to implement a graph search algorithm 
-    [2nd Edition: Fig. 3.18, 3rd Edition: Fig 3.7].
-      
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-      
-    print "Start:", problem.getStartState()
-    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-    print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    """
-    "*** YOUR CODE HERE ***"
+    """A hackish DFS algorithm specific to solving single-destination problems.
+       """
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST
@@ -108,42 +94,37 @@ def depthFirstSearch(problem):
     starting_position = problem.getStartState()
     current_node = Node((starting_position, "", 0)) 
     
-    all_nodes = [starting_position]#List of coordinates
-    fringe_nodes = []# List of nodes
+    all_nodes = [starting_position]    # List of coordinates
+    fringe_nodes = []                  # List of nodes (we need to know its' parent)
     current_path = [starting_position] # List of coordinates 
+    solution = []                      # List of directions from game module
 
     while not problem.isGoalState(current_node.coordinate):
-        print "Looping...  Current Node:", current_node.coordinate
         for successor in problem.getSuccessors(current_node.coordinate):
-            # Prevent loops by checking for unseen nodes
+            # Prevent loops by only adding new nodes
             if successor[0] not in all_nodes:
-                print "Appending:", successor[0]
                 all_nodes.append(successor[0])
                 fringe_nodes.append(Node(successor, current_node.coordinate))
+
         next_node = fringe_nodes.pop()
 
         # if the next fringe node is not a child of the last node in our path...
         if not next_node.parent == current_path[-1]:
-            print "next_node's parent isn't last in our current path...", current_path
             # Pop nodes off our current path until it has the next_node as a child 
             while next_node.parent != current_path[-1]:
-                print "Popping:", current_path.pop()  
+                current_path.pop()  
 
         # Add it to our path and continue descending the tree.
         current_path.append(next_node.coordinate) 
         current_node = next_node
 
-    print "Goal State Found... must be:", current_node.coordinate
-
-    if problem.isGoalState(current_node.coordinate):
-        solution = []
+    if not problem.isGoalState(current_node.coordinate):
+        print "Failed to find a path to the goal state..."
+    else:
+        # Take our curren_path and turn it into a list of directions 
         last_coordinate = starting_position
-        print "GOAL:",
         for coordinate in current_path:
-            if coordinate == starting_position:
-                continue # This is the origin
-            else:
-                
+            if coordinate != starting_position:
                 for successor in problem.getSuccessors(last_coordinate):
                     if successor[0] == coordinate:
                         if   successor[1] == "West":
@@ -156,14 +137,8 @@ def depthFirstSearch(problem):
                             solution.append(e)
          
             last_coordinate = coordinate
-        print "Solution:", solution            
-        raw_input("")
-        return solution   
-            
-    else:
-        print "Failed:", current_path
-        
-        
+
+    return solution   
         
 def breadthFirstSearch(problem):
   """
