@@ -99,30 +99,67 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
+    from game import Directions
+    s = Directions.SOUTH
+    w = Directions.WEST
+    e = Directions.EAST
+    n = Directions.NORTH
+
     starting_position = problem.getStartState()
     current_node = Node((starting_position, "", 0)) 
     
-    fringe_nodes = []
-    current_path = [starting_position] 
+    all_nodes = [starting_position]#List of coordinates
+    fringe_nodes = []# List of nodes
+    current_path = [starting_position] # List of coordinates 
 
     while not problem.isGoalState(current_node.coordinate):
+        print "Looping...  Current Node:", current_node.coordinate
         for successor in problem.getSuccessors(current_node.coordinate):
-            fringe_nodes.append(Node(successor, current_node.coordinate))
+            # Prevent loops by checking for unseen nodes
+            if successor[0] not in all_nodes:
+                print "Appending:", successor[0]
+                all_nodes.append(successor[0])
+                fringe_nodes.append(Node(successor, current_node.coordinate))
         next_node = fringe_nodes.pop()
 
         # if the next fringe node is not a child of the last node in our path...
-        if not next_node.parent == current_path[:-1]:
+        if not next_node.parent == current_path[-1]:
+            print "next_node's parent isn't last in our current path...", current_path
             # Pop nodes off our current path until it has the next_node as a child 
-            while next_node.parent == current_path[:-1]:
-                current_path.pop()  
+            while next_node.parent != current_path[-1]:
+                print "Popping:", current_path.pop()  
 
         # Add it to our path and continue descending the tree.
         current_path.append(next_node.coordinate) 
-
         current_node = next_node
 
+    print "Goal State Found... must be:", current_node.coordinate
+
     if problem.isGoalState(current_node.coordinate):
-        print "GOAL:", current_path
+        solution = []
+        last_coordinate = starting_position
+        print "GOAL:",
+        for coordinate in current_path:
+            if coordinate == starting_position:
+                continue # This is the origin
+            else:
+                
+                for successor in problem.getSuccessors(last_coordinate):
+                    if successor[0] == coordinate:
+                        if   successor[1] == "West":
+                            solution.append(w)
+                        elif successor[1] == "South":
+                            solution.append(s)
+                        elif successor[1] == "North":
+                            solution.append(n)
+                        elif successor[1] == "East":
+                            solution.append(e)
+         
+            last_coordinate = coordinate
+        print "Solution:", solution            
+        raw_input("")
+        return solution   
+            
     else:
         print "Failed:", current_path
         
