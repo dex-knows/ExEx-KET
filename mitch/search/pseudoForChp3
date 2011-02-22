@@ -1,0 +1,28 @@
+Psuedocode for BSF
+This is the same as the book but, I've tried to make it easier to understand
+in context of python (or my basic understanding). When I use the term 
+solution, it means I don't have a way of keeping track of the solution
+so it is filler until I think of one.
+
+function BFS(problem) returns solution or failure
+  node = problem.GetStartState()
+  if problem.isGoalState(node) then return solution(node)
+  frontier=[node]
+  explored=[]
+  while !frontier.isEmpty()
+    newNode=frontier.pop()
+    explored.append(newNode)
+    successors = newNode.getSuccessors()
+    for successor in successors
+      if successor.isNotIn(frontier or explored) then
+        if problem.isGoalState(succesor) then return solution(successor)
+        frontier.append(successor)
+  return failure
+
+Psuedocode for DFS
+The code for this is the exact same as BFS just change line 13 from the 
+above code to get the last element of frontier instead of the first
+
+Sadly, I got a little cocky and just wrote down "Dijstra Algorithm" for 
+uniform cost instead of actually psuedocoding it. This is the basis for A* 
+and the A* variants (obviously)
