@@ -20,8 +20,31 @@ function BFS(problem) returns solution or failure
   return failure
 
 Psuedocode for DFS
-The code for this is the exact same as BFS just change line 13 from the 
-above code to get the last element of frontier instead of the first
+After much debate/discussion with Dex, I think we have hammered out the rough structure of DFS. The explored list is actually going to be of type explored, which is going to have properties location, direction, and parent. To keep track of the goal path, we came up with a helper method, makeSolution, which takes the explored lists and goes through the nodes on the goal path then goes back to get the directions of the goal path.
+
+function DFS(problem) returns solution or failure
+  node = problem.GetStartState()
+  frontier=[node]
+  explored=[]
+  while len(frontier)!=0
+    newNode=frontier.pop()
+    explored.append(newNode)
+    if problem.isGoalState(node): return makeSolution(explored)
+    successors = newNode.getSuccessors()
+    for successor in successors
+      if successor.isNotIn(frontier or explored) then
+        frontier.append(successor)
+  return []
+
+function makeSolution(explored) returns solution
+  solution=[]
+  parent = explored[0].parent()
+  while len(explored)!=0:
+    path = explored.pop()
+    if path==parent:
+      solution.push(path)
+      parent=path.parent()
+  return solution
 
 Sadly, I got a little cocky and just wrote down "Dijstra Algorithm" for 
 uniform cost instead of actually psuedocoding it. This is the basis for A* 
