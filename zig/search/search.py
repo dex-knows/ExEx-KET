@@ -59,7 +59,7 @@ class Node(object):
        """
     def __init__(self, value, parent=None):
         """Value is exepected to be a triple with the following parts:
-            1. Coordinate tupel (x,y)
+            1. Coordinate tuple (x,y)
             2. Direction string (e.g. "west)
             3. Path cost as an integer (e.g. 1)
         Parent is a coordinate.
@@ -68,6 +68,16 @@ class Node(object):
         self.direction = value[1]
         self.cost = value[2]
         self.parent = parent
+
+class NodeImproved(object):
+    """Basic representation of a node on a map/tree.
+       """
+    def __init__(self, coordinate, accum_cost=0, accum_directions=[]):
+        """
+           """
+        self.coordinate = coordinate 
+        self.accumalitive_cost = accum_cost #Integer of cost up to this point
+        self.accumalitive_directions = accum_directions # list of directions
 
 def depthFirstSearch(problem):
     """A hackish DFS algorithm specific to solving single-destination problems.
@@ -124,17 +134,43 @@ def depthFirstSearch(problem):
     return solution   
         
 def breadthFirstSearch(problem):
-  """
-  Search the shallowest nodes in the search tree first.
-  [2nd Edition: p 73, 3rd Edition: p 82]
-  """
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+    """Search the shallowest nodes in the search tree first.
+    [2nd Edition: p 73, 3rd Edition: p 82]
+       """
+    util.raiseNotDefined()
       
 def uniformCostSearch(problem):
-  "Search the node of least total cost first. "
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+    """Search the node of least total cost first. 
+       """
+    # Bootstap...
+    starting_position = problem.getStartState()
+    root_node = NodeImproved(starting_position) 
+    fringe = [root_node]
+
+    # Main loop...
+    while(True):
+        fringe = sorted(fringe, key=lambda node: node.accumalitive_cost, reverse=True)
+        node_to_expand = fringe.pop()
+        accum_cost = node_to_expand.accumalitive_cost
+        accum_directions = node_to_expand.accumalitive_directions
+        print "accum dir", accum_directions
+
+        for child in problem.getSuccessors(node_to_expand.coordinate):
+            new_cost = accum_cost + child[2]
+            # TODO: perform lookup here? (of direction)
+            new_directions = list(accum_directions).append(child[1])
+            new_node = NodeImproved(child[0], new_cost, new_directions) 
+            fringe.append(new_node)
+        
+        if problem.isGoalState(node_to_expand.coordinate):
+            print node_to_expand.accumalitive_directions
+            print node_to_expand.accumalitive_cost
+            break # We found the path to take!
+        else:
+            print " Continuing..."
+
+    
+    raw_input("Hit Enter to Quit")# FIXME: This is a temporary hack
 
 def nullHeuristic(state, problem=None):
   """
@@ -145,8 +181,6 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
-  "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
     
   
 # Abbreviations
