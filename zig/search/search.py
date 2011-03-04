@@ -138,6 +138,31 @@ def breadthFirstSearch(problem):
     [2nd Edition: p 73, 3rd Edition: p 82]
        """
     util.raiseNotDefined()
+
+def translate_directions(path):
+    from game import Directions
+    s = Directions.SOUTH
+    w = Directions.WEST
+    e = Directions.EAST
+    n = Directions.NORTH
+    
+    solution = []
+    for direction in path:
+        if direction == "West":
+           solution.append(w)
+        elif direction == "South":
+           solution.append(s)
+        elif direction == "North":
+           solution.append(n)
+        elif direction == "East":
+           solution.append(e)
+           
+    return solution
+
+def manhattanHeuristic(coordinate, problem):
+  xy1 = coordinate
+  xy2 = problem.goal
+  return abs(xy1[0] - xy2[0]) + abs(xy1[1] - xy2[1])
       
 def uniformCostSearch(problem):
     """Search the node of least total cost first. 
@@ -146,6 +171,7 @@ def uniformCostSearch(problem):
     starting_position = problem.getStartState()
     root_node = NodeImproved(starting_position) 
     fringe = [root_node]
+    all_nodes = [] # prevent loops
 
     # Main loop...
     while(True):
@@ -153,24 +179,18 @@ def uniformCostSearch(problem):
         node_to_expand = fringe.pop()
         accum_cost = node_to_expand.accumalitive_cost
         accum_directions = node_to_expand.accumalitive_directions
-        print "accum dir", accum_directions
 
         for child in problem.getSuccessors(node_to_expand.coordinate):
-            new_cost = accum_cost + child[2]
-            # TODO: perform lookup here? (of direction)
-            new_directions = list(accum_directions).append(child[1])
-            new_node = NodeImproved(child[0], new_cost, new_directions) 
-            fringe.append(new_node)
+            if child[0] not in all_nodes:
+              all_nodes.append(child[0])
+              new_cost = accum_cost + child[2]
+              new_directions = accum_directions[:]
+              new_directions.append(child[1])
+              new_node = NodeImproved(child[0], new_cost, new_directions) 
+              fringe.append(new_node)
         
         if problem.isGoalState(node_to_expand.coordinate):
-            print node_to_expand.accumalitive_directions
-            print node_to_expand.accumalitive_cost
-            break # We found the path to take!
-        else:
-            print " Continuing..."
-
-    
-    raw_input("Hit Enter to Quit")# FIXME: This is a temporary hack
+            return translate_directions(node_to_expand.accumalitive_directions)
 
 def nullHeuristic(state, problem=None):
   """
@@ -180,7 +200,32 @@ def nullHeuristic(state, problem=None):
   return 0
 
 def aStarSearch(problem, heuristic=nullHeuristic):
-  "Search the node that has the lowest combined cost and heuristic first."
+    """Search the node that has the lowest combined cost and heuristic first.
+       """
+    # Bootstap...
+    starting_position = problem.getStartState()
+    root_node = NodeImproved(starting_position) 
+    fringe = [root_node]
+    all_nodes = [] # prevent loops
+
+    # Main loop...
+    while(True):
+        fringe = sorted(fringe, key=lambda node: manhattanHeuristic(node.coordinate, problem) + node.accumalitive_cost, reverse=True)
+        node_to_expand = fringe.pop()
+        accum_cost = node_to_expand.accumalitive_cost
+        accum_directions = node_to_expand.accumalitive_directions
+
+        for child in problem.getSuccessors(node_to_expand.coordinate):
+            if child[0] not in all_nodes:
+              all_nodes.append(child[0])
+              new_cost = accum_cost + child[2]
+              new_directions = accum_directions[:]
+              new_directions.append(child[1])
+              new_node = NodeImproved(child[0], new_cost, new_directions) 
+              fringe.append(new_node)
+        
+        if problem.isGoalState(node_to_expand.coordinate):
+            return translate_directions(node_to_expand.accumalitive_directions)
     
   
 # Abbreviations
