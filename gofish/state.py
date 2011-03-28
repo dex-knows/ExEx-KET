@@ -121,7 +121,7 @@ class State(object):
             """
         return not self.__deck or self._anyones_hand_empty()
 
-    def start_new_game(self, players_list):
+    def start_new_game(self, print_intermediate_states, players_list):
         """
             """
         self.__setup_game(players_list)
@@ -145,7 +145,8 @@ class State(object):
                 break;
             
             else:
-                self.print_state()
+                if print_intermediate_states:
+                    self.print_state()
                 continue
 
     def __print_game_ending(self):
@@ -231,4 +232,4 @@ if __name__ == "__main__":
     helen = player("helen")
     
     s = State()
-    s.start_new_game([josh,ryan,mitch,helen])
+    s.start_new_game(False, [josh,ryan,mitch,helen])
