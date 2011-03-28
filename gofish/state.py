@@ -138,18 +138,26 @@ class State(object):
                 print "  Sorry, go fish!"
                 # TODO: dispatch that what they requested from whom and the result
                 self.__get_card_from_deck(next_player) # go fish (draw from draw pile)
-                next_player = request_from
             
             if self._end_of_play():
-                self.__print_game_ending()
-                break;
+                self.__handle_game_ending() # gives out final rewards
+                break;# todo , return marin of win, who won, and how long everyone took on average (per turn) and margin of loss
+                return {'winner': winner, 
+                           'players': {'player1': 
+                               {'magin-of-loss': 0, # for winner
+                                'average-turn-length': 2 # in seconds)
+                               }
+                            }
+                       }
             
             else:
+                self.__players[next_player].give_reward(0)
                 if print_intermediate_states:
                     self.print_state()
+                next_player = request_from 
                 continue
 
-    def __print_game_ending(self):
+    def __handle_game_ending(self):
         print ''
         seperator = '*'.join('+' for i in xrange(20))
         print seperator
@@ -172,10 +180,20 @@ class State(object):
             print players_with_the_most_sets[0], "won",
         print "with", most_sets, "sets!"
         print ''
-        
+
+        self.__give_final_rewards(players_with_the_most_sets)
         self.print_state()
             
+    def __give_final_rewards(self, winning_players):
+        """
+           """
+        reward = 0
 
+        for player in self.__players.keys():
+            if player in winning_players:
+                reward = 1
+            self.__players[player].give_reward(reward)
+                
     def get_hand(self, name):
         """
            """
@@ -212,24 +230,3 @@ class State(object):
         self.print_draw_pile()
         print '' # Create a newline
 
-class player(object):
-    """
-       """
-    def __init__(self, name):
-        self.name = name
-
-    def take_turn(self, state):
-        """
-           """
-        request_from = random.choice(state.get_player_list(self.name))
-        request_card = random.choice(state.get_hand(self.name))
-        return request_from, request_card
-
-if __name__ == "__main__":
-    josh = player("josh")
-    ryan = player("ryan")
-    mitch = player("mitch")
-    helen = player("helen")
-    
-    s = State()
-    s.start_new_game(False, [josh,ryan,mitch,helen])
