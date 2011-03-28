@@ -167,7 +167,7 @@ class State(object):
                 most_sets = len(sets)
 
         if len(players_with_the_most_sets) > 1:
-            print "Tie between:", ' '.join(players_with_the_most_sets),
+            print "Tie between:", ', '.join(players_with_the_most_sets),
         else:
             print players_with_the_most_sets[0], "won",
         print "with", most_sets, "sets!"
