@@ -1,4 +1,5 @@
 import random
+import timeit
 
 class RandomAgent(object):
     """
@@ -6,6 +7,7 @@ class RandomAgent(object):
     def __init__(self, name):
         self.name = name
 
+    @timeit.timeit
     def take_turn(self, state):
         """
            """
