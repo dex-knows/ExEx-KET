@@ -42,10 +42,10 @@ class State(object):
     def __setup_players(self, player_list):
         """
            """
-        for player_name, player_object in player_list.iteritems():
-            self.__players[player_name] = player_object
-            self.__player_hands[player_name] = []
-            self.__player_sets[player_name] = []
+        for player in player_list:
+            self.__players[player.name] = player
+            self.__player_hands[player.name] = []
+            self.__player_sets[player.name] = []
 
     def __get_card_from_deck(self, player_name):
         """
@@ -231,4 +231,4 @@ if __name__ == "__main__":
     helen = player("helen")
     
     s = State()
-    s.start_new_game({'josh':josh,'ryan':ryan,'mitch':mitch,'helen':helen})
+    s.start_new_game([josh,ryan,mitch,helen])
