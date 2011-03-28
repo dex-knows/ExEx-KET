@@ -140,7 +140,9 @@ class State(object):
                 self.__get_card_from_deck(next_player) # go fish (draw from draw pile)
             
             if self._end_of_play():
-                self.__handle_game_ending() # gives out final rewards
+                winners, most_sets = self.__get_winners() # gives out final rewards
+                self.__give_final_rewards(winners)
+                self.__print_results(winners, most_sets)
                 break;# todo , return marin of win, who won, and how long everyone took on average (per turn) and margin of loss
                 return {'winner': winner, 
                            'players': {'player1': 
@@ -157,31 +159,36 @@ class State(object):
                 next_player = request_from 
                 continue
 
-    def __handle_game_ending(self):
+    def __get_winners(self):
+        """
+           """
+        winners = []
+        most_sets = -1
+        for player_name, sets in self.__player_sets.iteritems():
+            if len(sets) > most_sets:
+                winners = [player_name]
+                most_sets = len(sets)
+            elif len(sets) == most_sets:
+                winners.append(player_name)
+                most_sets = len(sets)
+        return winners, most_sets
+
+    def __print_results(self, winners, most_sets):
+        """
+           """
         print ''
         seperator = '*'.join('+' for i in xrange(20))
         print seperator
         print ' '.join(c for c in "    Game   Over")
         print seperator
-        
-        players_with_the_most_sets = []
-        most_sets = -1
-        for player_name, sets in self.__player_sets.iteritems():
-            if len(sets) > most_sets:
-                players_with_the_most_sets = [player_name]
-                most_sets = len(sets)
-            elif len(sets) == most_sets:
-                players_with_the_most_sets.append(player_name)
-                most_sets = len(sets)
 
-        if len(players_with_the_most_sets) > 1:
-            print "Tie between:", ', '.join(players_with_the_most_sets),
+        if len(winners) > 1:
+            print "Tie between:", ', '.join(winners),
         else:
-            print players_with_the_most_sets[0], "won",
+            print winners[0], "won",
         print "with", most_sets, "sets!"
         print ''
 
-        self.__give_final_rewards(players_with_the_most_sets)
         self.print_state()
             
     def __give_final_rewards(self, winning_players):
