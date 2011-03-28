@@ -1,6 +1,7 @@
 from pydispatch import dispatcher 
 import random
 
+
 class State(object):
     """State for Go Fish
     Players: 3-6
@@ -129,7 +130,7 @@ class State(object):
         print "First player:", next_player
         while True:
             p = self.__players[next_player]
-            request_from, card = p.take_turn(self)
+            (request_from, card), duration = p.take_turn(self)
             print next_player, "is asking", request_from, "for", card + "'s...", 
             if card in self.__player_hands[request_from]:
                 number_given = self.__transfer_card(card, request_from, next_player)
@@ -176,8 +177,8 @@ class State(object):
     def __print_results(self, winners, most_sets):
         """
            """
-        print ''
         seperator = '*'.join('+' for i in xrange(20))
+        print ''
         print seperator
         print ' '.join(c for c in "    Game   Over")
         print seperator
