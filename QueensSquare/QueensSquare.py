@@ -1,7 +1,6 @@
 """This will contain the code that executes the Queens Square Game
    """
 import locale
-import timeit
 
 from GameState import Game
 from Agent import *

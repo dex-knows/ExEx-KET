@@ -91,6 +91,13 @@ def HillClimber(Board):
         else:
             return lowest_temp_squares[0]
 
+    def get_random_position(queen_model):
+        while True:
+            x = random.choice(range(len(queen_model)))
+            y = random.choice(range(len(queen_model)))
+            if not queen_model[x][y]:
+                return (x,y)
+
     def change_queen_position(Board, queen_model, queen, new_position):
         """Moves the queen and updates the board and model as necessary.
            """
@@ -120,6 +127,7 @@ def HillClimber(Board):
             reset_strikes(strikes, queen_model) # made an improvement, reset
             queen = get_hottest_queen(Board, heat_map)
             new_position = get_lowest_temp_square(queen_model, heat_map, queen.Position) 
+            #new_position = get_random_position(queen_model)
             change_queen_position(Board, queen_model, queen, new_position)
             old_score = new_score
 
