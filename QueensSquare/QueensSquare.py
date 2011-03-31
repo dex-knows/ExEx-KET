@@ -1,8 +1,14 @@
-#This will contain the code that executes the Queens Square Game
+"""This will contain the code that executes the Queens Square Game
+   """
+import locale
+import timeit
+
 from GameState import Game
 from Agent import *
 
 if __name__ == "__main__":
+    locale.setlocale(locale.LC_ALL, 'en_US.utf8')
+
 #    a = Game()
 #    a.NewGame(4)
 #    a.MoveQueen(0, (0, 2))
@@ -30,12 +36,11 @@ if __name__ == "__main__":
         NumRuns = 100
         TotalAttempts = 0
         for x in xrange(NumRuns): 
-            RandomAgent(Test)
-            #HillClimber(Test)
-            TotalAttempts = TotalAttempts + Test.GetAttempts()
+            #RandomAgent(Test)
+            HillClimber(Test)
+            TotalAttempts +=  Test.GetAttempts()
 
         print "Game Size:", game_size
-        print "Average Attemps:", TotalAttempts/NumRuns
-        print "Total Attempts:", TotalAttempts
+        print "Average Attemps:", locale.format("%d", TotalAttempts/NumRuns, grouping=True)
         print 
     
