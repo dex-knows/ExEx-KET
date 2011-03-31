@@ -31,7 +31,8 @@ if __name__ == "__main__":
         NumRuns = 100
         TotalAttempts = 0
         for x in xrange(NumRuns): 
-            RandomAgent(Test)
+            #RandomAgent(Test)
+            HillClimber(Test)
             TotalAttempts = TotalAttempts + Test.GetAttempts()
 
         print "Game Size"

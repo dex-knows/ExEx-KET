@@ -1,9 +1,9 @@
-#This contains the different agents that can play Queens Square
-
-from GameState import Game
+"""This contains the different agents that can play Queens Square
+   """
 import random
 
-
+from GameState import Game
+from Helpful import place_pieces_randomly 
 
 def RandomAgent(Board):
     """An agent that will try to randomly place the queens to win."""
@@ -29,3 +29,11 @@ def FitnessGoal(Size):
     #formulate based on combination Size choose 2.
     #perfect fitness is one in which all pairs of queens don't attack
     return (Size * (Size -1))/2  
+
+def HillClimber(Board):
+    """An agent that tries moving one piece at a time to win.  It will start over if
+    it ever reaches diminishing returns.
+       """
+    while not Board.IsEndState():
+        place_pieces_randomly(Board)
+    
