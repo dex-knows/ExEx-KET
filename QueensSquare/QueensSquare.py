@@ -23,23 +23,19 @@ if __name__ == "__main__":
 #    a.MoveQueen(7, (7, 4))
 #    print a.IsEndState()
 
-    for i in xrange(10):
+    for game_size in range(4,14):
         
         Test = Game()
-        GameSize = i + 4
-        Test.NewGame(GameSize)
+        Test.NewGame(game_size)
         NumRuns = 100
         TotalAttempts = 0
         for x in xrange(NumRuns): 
-            #RandomAgent(Test)
-            HillClimber(Test)
+            RandomAgent(Test)
+            #HillClimber(Test)
             TotalAttempts = TotalAttempts + Test.GetAttempts()
 
-        print "Game Size"
-        print GameSize
-        print "Average Attemps"
-        print TotalAttempts/NumRuns
-        print "Total Attempts"
-        print TotalAttempts
-        print
+        print "Game Size:", game_size
+        print "Average Attemps:", TotalAttempts/NumRuns
+        print "Total Attempts:", TotalAttempts
+        print 
     
