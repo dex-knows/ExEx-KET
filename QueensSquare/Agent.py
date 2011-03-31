@@ -100,8 +100,15 @@ def HillClimber(Board):
         queen_model[new_x][new_y] = True 
         queen.Position = new_position
 
+    def reset_strikes(strikes, queen_model):
+        strikes = len(queen_model)*2
+        #strikes = len(queen_model)^len(queen_model)
+
     queen_model = place_pieces_randomly(Board) # moves the queens on Board
+    strikes = None
+    reset_strikes(strikes, queen_model) 
     old_score = None 
+    strikes = 0 
 
     while not Board.IsEndState():
         heat_map = get_heat_map(Board)
@@ -110,13 +117,18 @@ def HillClimber(Board):
         new_score = get_layout_score(Board, heat_map)
 
         if not old_score or new_score < old_score:
+            reset_strikes(strikes, queen_model) # made an improvement, reset
             queen = get_hottest_queen(Board, heat_map)
             new_position = get_lowest_temp_square(queen_model, heat_map, queen.Position) 
             change_queen_position(Board, queen_model, queen, new_position)
             old_score = new_score
 
         else:
-            queen_model = place_pieces_randomly(Board) # moves the queens on Board
-            old_score = None
+            if strikes > 0:
+                strikes -= 1
+            else:
+                queen_model = place_pieces_randomly(Board) # moves the queens on Board
+                reset_strikes(strikes, queen_model)
+                old_score = None
             
     
