@@ -25,14 +25,7 @@ class State(object):
         """
 
     def __init__(self):
-        self.__setup_pubsub()
         pass # TODO: Setup variables for tracking wins/losses and time to win/loss?
-
-    def __setup_pubsub(self):
-        """
-           """
-        dispatcher.connect(self.get_player_list, "get_player_list")
-        dispatcher.connect(self.get_hand, "get_hand")
 
     def __shuffle_deck(self):
         """
