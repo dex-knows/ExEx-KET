@@ -6,7 +6,7 @@ from GameState import Game
 from Agent import *
 
 if __name__ == "__main__":
-    locale.setlocale(locale.LC_ALL, 'en_US.utf8')
+    locale.setlocale(locale.LC_ALL, 'English_United States')
 
 #    a = Game()
 #    a.NewGame(4)
@@ -41,5 +41,6 @@ if __name__ == "__main__":
 
         print "Game Size:", game_size
         print "Average Attemps:", locale.format("%d", TotalAttempts/NumRuns, grouping=True)
-        print 
+        print
+        raw_input("Hit enter to continue.")
     

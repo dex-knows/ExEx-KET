@@ -1,6 +1,7 @@
 """This contains the different agents that can play Queens Square
    """
 import random
+from copy import deepcopy
 
 from GameState import Game
 from Helpful import * 
@@ -34,14 +35,14 @@ def HillClimber(Board):
     """An agent that tries moving one piece at a time to win.  It will start over if
     it ever reaches diminishing returns.
        """
-    def get_layout_score(Board, heat_map):
+    def get_layout_score(Board):
         """Gives a general "fitness" score for the current layout and an updated heat map.
            """
+        heat_map = get_heat_map(Board)
         score = 0
         for queen in Board.Queens:
             x,y = queen.Position
             score += heat_map[x][y]
-
         return score
 
     def get_hottest_queen(Board, heat_map):
@@ -111,32 +112,56 @@ def HillClimber(Board):
         strikes = len(queen_model)*2
         #strikes = len(queen_model)^len(queen_model)
 
-    queen_model = place_pieces_randomly(Board) # moves the queens on Board
-    strikes = None
-    reset_strikes(strikes, queen_model) 
+    def map_moves(board):
+        """Maps all possible single moves to their resulting scores.
+           """
+        moves = {} # key: ((x),(orig_y, new_y)) val: (score)
+        size = board.GetSize()
+        for i in xrange(size):
+            board_copy = deepcopy(board)
+            queen = board_copy.Queens[i]
+            x, current_y = queen.Position
+            for new_y in xrange(size):
+                if new_y != current_y:
+                    queen.Position = (x,new_y) # only moves it on the board copy!
+                    score = get_layout_score(board_copy)
+                    try:
+                        moves[score].append(((x),(current_y,new_y)))
+                    except:
+                        moves[score] = [((x),(current_y,new_y))]
+        return moves
+
+    def move_queen(board, move):
+        x = move[0]
+        old_y, new_y = move[1]
+
+        for queen in board.Queens:
+            qX, qY = queen.Position
+            if qX == x and qY == old_y:
+                queen.Position = (x,new_y)
+                break
+
+    
+
+    place_pieces_randomly(Board) # moves the queens on Board
     old_score = None 
-    strikes = 0 
 
     while not Board.IsEndState():
-        heat_map = get_heat_map(Board)
-        #print_queen_positions(Board)
-        #print_heat_map(queen_model, heat_map)
-        new_score = get_layout_score(Board, heat_map)
+        new_score = get_layout_score(Board)
 
         if not old_score or new_score < old_score:
-            reset_strikes(strikes, queen_model) # made an improvement, reset
-            queen = get_hottest_queen(Board, heat_map)
-            new_position = get_lowest_temp_square(queen_model, heat_map, queen.Position) 
-            #new_position = get_random_position(queen_model)
-            change_queen_position(Board, queen_model, queen, new_position)
-            old_score = new_score
-
-        else:
-            if strikes > 0:
-                strikes -= 1
+            moves = map_moves(Board)
+            best_move = min(moves)
+            if best_move < new_score:
+                #print "Best move results in a score of:", best_move, "Old Score:", new_score, "Move(s):", moves[best_move]
+                move_to_take = random.choice(moves[best_move])
+                move_queen(Board, move_to_take)
+                old_score = new_score
             else:
-                queen_model = place_pieces_randomly(Board) # moves the queens on Board
-                reset_strikes(strikes, queen_model)
+                place_pieces_randomly(Board) # moves the queens on Board
                 old_score = None
+        else:
+            place_pieces_randomly(Board) # moves the queens on Board
+            old_score = None
             
     
