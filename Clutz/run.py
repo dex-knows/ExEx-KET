@@ -4,13 +4,16 @@ from Agent import Agent
 test = GameState("map.txt", -0.04, .2, .8, False, 0)
 agent = Agent(test, "policy.txt")
 
-while not test.isEndOfGame():
-    agent.move()
+avgReward = 0
+
+for x in range(1000):
+    print("Playing game ", x+1)
+    while not test.isEndOfGame():
+        agent.move()
     print(test.getReward())
-    input("Pause")
-  
-print(test.getWinLoc())
-print(test.getLoseLoc())
-print(test.getReward())
+    avgReward += test.getReward()
+    test.restart()
+    
+print(avgReward/1000)
 
 input("Hit enter to quit")
