@@ -14,6 +14,8 @@ class RandomAgent(BaseAgent):
     def take_turn(self, state):
         """
            """
+        num_cards = state.get_number_of_cards(self.name)
+
         request_from = random.choice(state.get_player_list(self.name))
         request_card = random.choice(state.get_hand(self.name))
         #time.sleep(.5)

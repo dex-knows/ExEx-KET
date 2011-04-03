@@ -223,6 +223,11 @@ class State(object):
            """
         return self.__player_hands[name]
 
+    def get_number_of_cards(self, name):
+        """
+           """
+        return len(self.__player_hands[name])
+
     def get_player_list(self, exclude=None):
         """
            """
