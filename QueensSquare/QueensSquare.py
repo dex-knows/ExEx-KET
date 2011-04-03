@@ -6,7 +6,8 @@ from GameState import Game
 from Agent import *
 
 if __name__ == "__main__":
-    locale.setlocale(locale.LC_ALL, 'English_United States')
+    #locale.setlocale(locale.LC_ALL, 'English_United States')
+    locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 
 #    a = Game()
 #    a.NewGame(4)
