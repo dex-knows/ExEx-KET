@@ -19,7 +19,7 @@ class BaseAgent(object):
         return request_from, request_card
 
     @timeit.timereaction
-    def trade_notification(state, requester, card, requested_from, number_given, set_made):
+    def trade_notification(self, state, requester, card, requested_from, number_given, set_made):
         """A notification from the state, which gives who requested the card, the card requested,
         who it was requested from, how many were given and if that trade resulted in a set.
 
@@ -31,6 +31,13 @@ class BaseAgent(object):
         number_given ~ int
         set_made ~ boolean 
            """
+        #print self.name, "got a trade notification:", requester, "requested", card + "'s from", 
+        #print requested_from, "and received", number_given,
+        #if set_made:
+        #    print "resulting in a set!"
+        #else:
+        #    print '' # create a new line
+
         pass
 
     @timeit.timereaction

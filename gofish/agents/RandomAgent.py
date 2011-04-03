@@ -1,13 +1,15 @@
 import random
 import timeit
 
-class RandomAgent(object):
+from BaseAgent import BaseAgent
+
+class RandomAgent(BaseAgent):
     """
        """
     def __init__(self, name):
         self.name = name
 
-    @timeit.timeit
+    @timeit.timeturn
     def take_turn(self, state):
         """
            """

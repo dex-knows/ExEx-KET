@@ -62,8 +62,9 @@ class State(object):
         return number_given
 
     def __check_for_set(self, card_to_check, player):
-        """
+        """Returns true when a set is made, and false when none is made.
            """
+        set_made = False
         number_found = 0
         card_indexes = []
         for position, card in enumerate(self.__player_hands[player]):
@@ -73,11 +74,14 @@ class State(object):
 
         if number_found == 4:
             print "***", player, "made a set of", card_to_check, "'s !"
+            set_made = True
             self.__player_sets[player].append(card_to_check)
             #TODO: Dispatch notices of the set found (if any)
             card_indexes.reverse() # go in reverse so the indexes don't change as we start to pop things off the list!
             for position in card_indexes:
                 self.__player_hands[player].pop(position)    
+
+        return set_made
 
     def __setup_game(self, players_list):
         """
@@ -121,16 +125,24 @@ class State(object):
         next_player = random.choice(self.__player_hands.keys())
         print "First player:", next_player
         while True:
+            number_given = 0 
+            set_made = False
+
             p = self.__players[next_player]
             (request_from, card), duration = p.take_turn(self)
             print next_player, "is asking", request_from, "for", card + "'s...", 
+
             if card in self.__player_hands[request_from]:
                 number_given = self.__transfer_card(card, request_from, next_player)
-                self.__check_for_set(card, next_player)
+                set_made = self.__check_for_set(card, next_player)
+
             else:
                 print "  Sorry, go fish!"
                 # TODO: dispatch that what they requested from whom and the result
                 self.__get_card_from_deck(next_player) # go fish (draw from draw pile)
+
+            for player_name, player_object in self.__players.iteritems():
+                player_object.trade_notification(self, next_player, card, request_from, number_given, set_made)
             
             if self._end_of_play():
                 winners, most_sets = self.__get_winners() # gives out final rewards

@@ -13,7 +13,7 @@ def timeturn(func):
 
     return wrapper
 
- def timereaction(func):
+def timereaction(func):
     """Times an agents reaction time for any call that does not result in a return value.
        """
 
