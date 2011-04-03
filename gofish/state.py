@@ -39,6 +39,8 @@ class State(object):
             self.__players[player.name] = player
             self.__player_hands[player.name] = []
             self.__player_sets[player.name] = []
+            self.__player_time_taken[player.name] = 0
+            self.__player_turns_taken[player.name] = 0
 
     def __get_card_from_deck(self, player_name):
         """
@@ -93,6 +95,8 @@ class State(object):
         self.__players = {} # keys are their handles, val is the player object
         self.__player_hands = {} # same keys as above, val is list of cards held
         self.__player_sets = {}
+        self.__player_time_taken = {}
+        self.__player_turns_taken = {}
         self.__setup_players(players_list) 
         
         for i in xrange(5): # Pass out five cards to each player
@@ -130,6 +134,9 @@ class State(object):
 
             p = self.__players[next_player]
             (request_from, card), duration = p.take_turn(self)
+            self.__player_time_taken[next_player] += duration
+            self.__player_turns_taken[next_player] += 1
+
             print next_player, "is asking", request_from, "for", card + "'s...", 
 
             if card in self.__player_hands[request_from]:
@@ -142,7 +149,8 @@ class State(object):
                 self.__get_card_from_deck(next_player) # go fish (draw from draw pile)
 
             for player_name, player_object in self.__players.iteritems():
-                player_object.trade_notification(self, next_player, card, request_from, number_given, set_made)
+                duration = player_object.trade_notification(self, next_player, card, request_from, number_given, set_made)
+                self.__player_time_taken[next_player] += duration
             
             if self._end_of_play():
                 winners, most_sets = self.__get_winners() # gives out final rewards
@@ -240,5 +248,11 @@ class State(object):
     def print_state(self):
         self.print_hands_and_sets()
         self.print_draw_pile()
+        self.print_time_taken()
         print '' # Create a newline
+
+    def print_time_taken(self):
+        for player_name, time_taken in self.__player_time_taken.iteritems():
+            avg_turn  = time_taken/self.__player_turns_taken[player_name]
+            print player_name, "took an average of %d.3 seconds per turn" % avg_turn
 
