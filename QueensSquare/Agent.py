@@ -45,73 +45,6 @@ def HillClimber(Board):
             score += heat_map[x][y]
         return score
 
-    def get_hottest_queen(Board, heat_map):
-        """Returns the position or the queen under the hottest square.
-
-        If there is a tie, it randomly chooses one.
-           """
-        highest_score = 0
-        hottest_queens = []
-        for queen in Board.Queens:
-            x,y = queen.Position
-            score = heat_map[x][y]
-
-            if score > highest_score:
-                hottest_queens = [queen]
-            elif score == highest_score:
-                hottest_queens.append(queen)
-
-        return random.choice(hottest_queens)
-
-    def get_lowest_temp_square(queen_model, heat_map, preferred_position):
-        """Returns the lowest temperature square on the board.
-
-        If there is a tie, it prefers one in the same row or column 
-        as the preferred position passed in.
-           """
-        lowest_score = 100000000  
-        lowest_temp_squares = []
-        for x in heat_map:
-            for y in heat_map[x]:
-                if not queen_model[x][y]: # skip squares already occupied
-                    score = heat_map[x][y]
-                    if score < lowest_score:
-                        lowest_temp_squares = [(x,y)]
-                        lowest_score = score
-                    elif score == lowest_score:
-                        lowest_temp_squares.append((x,y))
-
-        if len(lowest_temp_squares) > 1:
-            for position in lowest_temp_squares:
-                x,y = position
-                if x == preferred_position[0] or \
-                   y == preferred_position[0]:  
-                    return position
-            # else... return a random one...
-            return random.choice(lowest_temp_squares)
-        else:
-            return lowest_temp_squares[0]
-
-    def get_random_position(queen_model):
-        while True:
-            x = random.choice(range(len(queen_model)))
-            y = random.choice(range(len(queen_model)))
-            if not queen_model[x][y]:
-                return (x,y)
-
-    def change_queen_position(Board, queen_model, queen, new_position):
-        """Moves the queen and updates the board and model as necessary.
-           """
-        old_x, old_y = queen.Position
-        new_x, new_y = new_position
-        queen_model[old_x][old_y] = False
-        queen_model[new_x][new_y] = True 
-        queen.Position = new_position
-
-    def reset_strikes(strikes, queen_model):
-        strikes = len(queen_model)*2
-        #strikes = len(queen_model)^len(queen_model)
-
     def map_moves(board):
         """Maps all possible single moves to their resulting scores.
            """
@@ -141,7 +74,10 @@ def HillClimber(Board):
                 queen.Position = (x,new_y)
                 break
 
-    
+    def start_over(Board):
+        #place_pieces_randomly(Board) # moves the queens on Board
+        #place_pieces_randomly_one_to_a_row(Board)
+        place_pieces_randomly_one_to_a_row_and_column(Board)
 
     place_pieces_randomly(Board) # moves the queens on Board
     old_score = None 
@@ -158,10 +94,10 @@ def HillClimber(Board):
                 move_queen(Board, move_to_take)
                 old_score = new_score
             else:
-                place_pieces_randomly(Board) # moves the queens on Board
+                start_over(Board)
                 old_score = None
         else:
-            place_pieces_randomly(Board) # moves the queens on Board
+            start_over(Board)
             old_score = None
             
     

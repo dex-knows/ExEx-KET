@@ -33,7 +33,7 @@ def place_pieces_randomly(Board):
     size_list = range(size)
     model = get_board_model(size, False) # False~ No queen, True~ Queen
 
-    for queen in Board.Queens:
+    for count, queen in enumerate(Board.Queens):
         while True:
             x = random.choice(size_list)
             y = random.choice(size_list)
@@ -42,6 +42,44 @@ def place_pieces_randomly(Board):
                 queen.Position = (x, y)
                 break # place the next queen
     return model
+
+def place_pieces_randomly_one_to_a_row(Board):
+    """Places the queens randomly (though it does check that no two queens are in the same place) 
+    and returns the model of that layout.
+       """
+    size = Board.GetSize() 
+    size_list = range(size)
+    model = get_board_model(size, False) # False~ No queen, True~ Queen
+
+    for count, queen in enumerate(Board.Queens):
+        while True:
+            x = count 
+            y = random.choice(size_list)
+            if not model[x][y]: # if no queen exists here yet
+                model[x][y] = True 
+                queen.Position = (x, y)
+                break # place the next queen
+    return model
+
+def place_pieces_randomly_one_to_a_row_and_column(Board):
+    """Places the queens randomly (though it does check that no two queens are in the same place) 
+    and returns the model of that layout.
+       """
+    size = Board.GetSize() 
+    size_list = range(size)
+    model = get_board_model(size, False) # False~ No queen, True~ Queen
+
+    for count, queen in enumerate(Board.Queens):
+        while True:
+            x = count 
+            y = random.choice(size_list)
+            size_list.remove(y) # so no queen will be in the same row or column
+            if not model[x][y]: # if no queen exists here yet
+                model[x][y] = True 
+                queen.Position = (x, y)
+                break # place the next queen
+    return model
+
 
 def get_heat_map(Board):
     """Returns a board model with each element being an integer from 0+.  Each 
