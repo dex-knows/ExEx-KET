@@ -149,7 +149,11 @@ class State(object):
                 self.__get_card_from_deck(next_player) # go fish (draw from draw pile)
 
             for player_name, player_object in self.__players.iteritems():
-                duration = player_object.trade_notification(self, next_player, card, request_from, number_given, set_made)
+                duration = player_object.trade_notification(self, next_player, card, request_from, number_given)
+
+                if set_made:
+                    duration += player_object.set_notification(self, next_player, card)
+
                 self.__player_time_taken[next_player] += duration
             
             if self._end_of_play():

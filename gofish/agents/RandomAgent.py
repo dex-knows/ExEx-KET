@@ -16,7 +16,7 @@ class RandomAgent(BaseAgent):
            """
         request_from = random.choice(state.get_player_list(self.name))
         request_card = random.choice(state.get_hand(self.name))
-        time.sleep(.5)
+        #time.sleep(.5)
         return request_from, request_card
 
     def give_reward(self, reward):
