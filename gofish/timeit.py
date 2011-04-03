@@ -1,7 +1,7 @@
 import time
 
-def timeit(func):
-    """
+def timeturn(func):
+    """Times an agents reaction time when taking its turn (asking for a card from someone).
        """
 
     def wrapper(*arg):
@@ -10,5 +10,18 @@ def timeit(func):
         t2 = time.time()
         duration = (t2-t1)*1000.0
         return res, duration
+
+    return wrapper
+
+ def timereaction(func):
+    """Times an agents reaction time for any call that does not result in a return value.
+       """
+
+    def wrapper(*arg):
+        t1 = time.time()
+        func(*arg)
+        t2 = time.time()
+        duration = (t2-t1)*1000.0
+        return duration
 
     return wrapper
