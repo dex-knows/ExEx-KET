@@ -1,3 +1,4 @@
+
 """This will contain the code that executes the Queens Square Game
    """
 import locale
@@ -55,3 +56,4 @@ if __name__ == "__main__":
     else:
         agent = args[0]
         run_test(agent, options.locale, options.wait)
+
