@@ -8,9 +8,8 @@ import Agent
 
 VERSION = "0.20"
 
-def run_test(agent):
-    #locale.setlocale(locale.LC_ALL, 'English_United States')
-    locale.setlocale(locale.LC_ALL, 'en_US.utf8')
+def run_test(agent, desired_locale):
+    locale.setlocale(locale.LC_ALL, desired_locale)
 
     print "Starting Queens Square Test Using:", agent , "at", datetime.now()
 
@@ -43,11 +42,12 @@ if __name__ == "__main__":
             usage += '\n    ' + method
 
     parser = OptionParser(usage, version="%prog "+VERSION)
-    # See default variables at the top of this file 
+    parser.add_option("-l", "--locale", dest="locale", help="locale to use for formatting strings", default='en_US.utf8')
+
     (options, args) = parser.parse_args()
 
     if len(args) != 1:
         parser.error("incorrect number of arguments")
     else:
         agent = args[0]
-        run_test(agent)
+        run_test(agent, options.locale)
