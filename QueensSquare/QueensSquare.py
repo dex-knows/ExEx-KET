@@ -11,7 +11,9 @@ VERSION = "0.20"
 def run_test(agent, desired_locale, wait=False):
     locale.setlocale(locale.LC_ALL, desired_locale)
 
-    print "Starting Queens Square Test Using:", agent , "at", datetime.now()
+    print "Starting Queens Square Test", "at", datetime.now()
+    print "    Using:", agent
+    print "" 
 
     for game_size in range(4,14):
         
