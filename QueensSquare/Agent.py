@@ -5,7 +5,9 @@ from copy import deepcopy
 
 from GameState import Game
 from Helpful import * 
+import timeit
 
+@timeit.timereaction
 def RandomAgent(Board):
     """An agent that will try to randomly place the queens to win."""
     a = 0
@@ -31,6 +33,7 @@ def FitnessGoal(Size):
     #perfect fitness is one in which all pairs of queens don't attack
     return (Size * (Size -1))/2  
 
+@timeit.timereaction
 def HillClimber(Board):
     """An agent that tries moving one piece at a time to win.  It will start over if
     it ever reaches diminishing returns.
@@ -100,17 +103,17 @@ def HillClimber(Board):
             start_over(Board)
             old_score = None
 
+@timeit.timereaction
 def TrueRandomAgentA(Board):
     while not Board.IsEndState():
         place_pieces_randomly(Board) # moves the queens on Board
 
+@timeit.timereaction
 def TrueRandomAgentB(Board):
     while not Board.IsEndState():
         place_pieces_randomly_one_to_a_row(Board)
 
+@timeit.timereaction
 def TrueRandomAgentC(Board):
     while not Board.IsEndState():
         place_pieces_randomly_one_to_a_row_and_column(Board)
-
-            
-    

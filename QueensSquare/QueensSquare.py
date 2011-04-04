@@ -1,33 +1,18 @@
 """This will contain the code that executes the Queens Square Game
    """
 import locale
+from datetime import datetime
 
 from GameState import Game
-from Agent import *
+import Agent
 
-if __name__ == "__main__":
+VERSION = "0.20"
+
+def run_test(agent):
     #locale.setlocale(locale.LC_ALL, 'English_United States')
     locale.setlocale(locale.LC_ALL, 'en_US.utf8')
 
-#    a = Game()
-#    a.NewGame(4)
-#    a.MoveQueen(0, (0, 2))
-#    a.MoveQueen(1, (1, 0))
-#    a.MoveQueen(2, (2, 3))
-#    a.MoveQueen(3, (3, 1))
-#    print a.IsEndState()
-#    a.MoveQueen(0, (2, 1))
-#    print a.IsEndState()
-#    a.NewGame(8)
-#    a.MoveQueen(0, (0, 1))
-#    a.MoveQueen(1, (1, 3))
-#    a.MoveQueen(2, (2, 5))
-#    a.MoveQueen(3, (3, 7))
-#    a.MoveQueen(4, (4, 2))
-#    a.MoveQueen(5, (5, 0))
-#    a.MoveQueen(6, (6, 6))
-#    a.MoveQueen(7, (7, 4))
-#    print a.IsEndState()
+    print "Starting Queens Square Test Using:", agent , "at", datetime.now()
 
     for game_size in range(4,14):
         
@@ -35,16 +20,34 @@ if __name__ == "__main__":
         Test.NewGame(game_size)
         NumRuns = 100
         TotalAttempts = 0
+        duration = float(0)
         for x in xrange(NumRuns): 
-            #RandomAgent(Test)
-            #TrueRandomAgentA(Test)
-            #TrueRandomAgentB(Test)
-            #TrueRandomAgentC(Test)
-            HillClimber(Test)
+            duration += getattr(Agent, agent)(Test)
+
             TotalAttempts +=  Test.GetAttempts()
 
         print "Game Size:", game_size
         print "Average Attemps:", locale.format("%d", TotalAttempts/NumRuns, grouping=True)
+        print "Average Time to Solve:", locale.format("%f", duration/NumRuns, grouping=True), "seconds"
         print
-        raw_input("Hit enter to continue.")
+        #raw_input("Hit enter to continue.")
     
+
+if __name__ == "__main__":
+    from optparse import OptionParser
+    usage = "usage: %prog [options] Algorithm \n"
+    usage += '\n'
+    usage += "available agents: \n"
+    for method in dir(Agent):
+        if 'Agent' in method:
+            usage += '\n    ' + method
+
+    parser = OptionParser(usage, version="%prog "+VERSION)
+    # See default variables at the top of this file 
+    (options, args) = parser.parse_args()
+
+    if len(args) != 1:
+        parser.error("incorrect number of arguments")
+    else:
+        agent = args[0]
+        run_test(agent)
