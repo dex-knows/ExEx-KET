@@ -79,7 +79,7 @@ def HillClimber(Board):
         #place_pieces_randomly_one_to_a_row(Board)
         place_pieces_randomly_one_to_a_row_and_column(Board)
 
-    place_pieces_randomly(Board) # moves the queens on Board
+    start_over(Board)
     old_score = None 
 
     while not Board.IsEndState():
@@ -99,5 +99,18 @@ def HillClimber(Board):
         else:
             start_over(Board)
             old_score = None
+
+def TrueRandomAgentA(Board):
+    while not Board.IsEndState():
+        place_pieces_randomly(Board) # moves the queens on Board
+
+def TrueRandomAgentB(Board):
+    while not Board.IsEndState():
+        place_pieces_randomly_one_to_a_row(Board)
+
+def TrueRandomAgentC(Board):
+    while not Board.IsEndState():
+        place_pieces_randomly_one_to_a_row_and_column(Board)
+
             
     

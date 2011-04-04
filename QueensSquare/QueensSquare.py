@@ -37,6 +37,9 @@ if __name__ == "__main__":
         TotalAttempts = 0
         for x in xrange(NumRuns): 
             #RandomAgent(Test)
+            #TrueRandomAgentA(Test)
+            #TrueRandomAgentB(Test)
+            #TrueRandomAgentC(Test)
             HillClimber(Test)
             TotalAttempts +=  Test.GetAttempts()
 
