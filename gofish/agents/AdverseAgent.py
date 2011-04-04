@@ -9,8 +9,7 @@ class AdverseAgent(BaseAgent):
     def __init__(self, name):
 	print "In subclass"
         self.name = name
-        self._known_hands = {}
-
+        
     @timeit.timeturn
     def take_turn(self, state):
         return self._make_choice(self, state)
@@ -36,3 +35,8 @@ class AdverseAgent(BaseAgent):
         else:
             self._known_hands[requester][card] += number_given
             self._known_hands[requested_from][card] -= number_given
+     
+    def setup(self, state):
+        self._known_hands = {}
+        for player in state.get_player_list(self.name):
+            self._known_hands[player] = {2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,J:0,Q:0,K:0,A:0}
