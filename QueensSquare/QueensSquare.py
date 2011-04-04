@@ -8,7 +8,7 @@ import Agent
 
 VERSION = "0.20"
 
-def run_test(agent, desired_locale):
+def run_test(agent, desired_locale, wait=False):
     locale.setlocale(locale.LC_ALL, desired_locale)
 
     print "Starting Queens Square Test Using:", agent , "at", datetime.now()
@@ -29,7 +29,8 @@ def run_test(agent, desired_locale):
         print "Average Attemps:", locale.format("%d", TotalAttempts/NumRuns, grouping=True)
         print "Average Time to Solve:", locale.format("%f", duration/NumRuns, grouping=True), "seconds"
         print
-        #raw_input("Hit enter to continue.")
+        if wait:
+            raw_input("Hit enter to continue.")
     
 
 if __name__ == "__main__":
@@ -43,6 +44,7 @@ if __name__ == "__main__":
 
     parser = OptionParser(usage, version="%prog "+VERSION)
     parser.add_option("-l", "--locale", dest="locale", help="locale to use for formatting strings", default='en_US.utf8')
+    parser.add_option("-w", "--wait", action="store_true", dest="wait", help="wait between tests")
 
     (options, args) = parser.parse_args()
 
@@ -50,4 +52,4 @@ if __name__ == "__main__":
         parser.error("incorrect number of arguments")
     else:
         agent = args[0]
-        run_test(agent, options.locale)
+        run_test(agent, options.locale, options.wait)
