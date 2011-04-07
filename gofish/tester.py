@@ -9,4 +9,6 @@ if __name__ == "__main__":
     helen = RandomAgent("helen")
     
     s = State()
-    s.start_new_game(False, [josh,ryan,mitch,helen])
+    player_loss_margin = s.start_new_game(False, [josh,ryan,mitch,helen])
+    for player_name, loss_margin in player_loss_margin.iteritems():
+        print player_name, "lost by", loss_margin

@@ -1,6 +1,5 @@
 import random
 
-
 class State(object):
     """State for Go Fish
     Players: 3-6
@@ -160,14 +159,7 @@ class State(object):
                 winners, most_sets = self.__get_winners() # gives out final rewards
                 self.__give_final_rewards(winners)
                 self.__print_results(winners, most_sets)
-                break;# todo , return marin of win, who won, and how long everyone took on average (per turn) and margin of loss
-                return {'winner': winner, 
-                           'players': {'player1': 
-                               {'magin-of-loss': 0, # for winner
-                                'average-turn-length': 2 # in seconds)
-                               }
-                            }
-                       }
+                return self.__get_margin_of_loss(most_sets)
             
             else:
                 self.__players[next_player].give_reward(0)
@@ -189,6 +181,14 @@ class State(object):
                 winners.append(player_name)
                 most_sets = len(sets)
         return winners, most_sets
+
+    def __get_margin_of_loss(self, most_sets):
+        """
+           """
+        margin_of_loss = {}
+        for player_name, sets in self.__player_sets.iteritems():
+            margin_of_loss[player_name] = most_sets - len(sets)
+        return margin_of_loss
 
     def __print_results(self, winners, most_sets):
         """
