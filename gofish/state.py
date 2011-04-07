@@ -59,7 +59,6 @@ class State(object):
                 number_given = number_given + 1
                 
         #TODO: Dispatch notices of the transfer  (num given and who it was between)  
-        print "giving them", number_given
         return number_given
 
     def __check_for_set(self, card_to_check, player):
@@ -74,7 +73,6 @@ class State(object):
                 card_indexes.append(position)
 
         if number_found == 4:
-            print "***", player, "made a set of", card_to_check, "'s !"
             set_made = True
             self.__player_sets[player].append(card_to_check)
             #TODO: Dispatch notices of the set found (if any)
@@ -82,12 +80,11 @@ class State(object):
             for position in card_indexes:
                 self.__player_hands[player].pop(position)    
 
-        return set_made
+        return set_made, card_to_check
 
     def __setup_game(self, players_list):
         """
             """
-        print "Setting up game..."
         self.__deck = ('2 3 4 5 6 7 8 9 10 J Q K A '*4).split(' ')
         self.__deck.remove('')
         self.__shuffle_deck()
@@ -101,8 +98,6 @@ class State(object):
         for i in xrange(5): # Pass out five cards to each player
             for player_name, hand in self.__players.iteritems():
                 self.__get_card_from_deck(player_name)
-                
-        self.print_hands()
 
     def _empty_hand(self, player_name):
         self.__player_hands[player_name] = []
@@ -121,12 +116,15 @@ class State(object):
             """
         return not self.__deck or self._anyones_hand_empty()
 
-    def start_new_game(self, print_intermediate_states, players_list):
+    def start_new_game(self, print_start_state, print_intermediate_states, print_trades, print_end_state, players_list):
         """
             """
         self.__setup_game(players_list)
         next_player = random.choice(self.__player_hands.keys())
-        print "First player:", next_player
+        if print_start_state:
+            self.print_hands()
+            print "First player:", next_player
+
         while True:
             number_given = 0 
             set_made = False
@@ -136,14 +134,20 @@ class State(object):
             self.__player_time_taken[next_player] += duration
             self.__player_turns_taken[next_player] += 1
 
-            print next_player, "is asking", request_from, "for", card + "'s...", 
+            if print_trades:
+                print next_player, "is asking", request_from, "for", card + "'s...", 
 
             if card in self.__player_hands[request_from]:
                 number_given = self.__transfer_card(card, request_from, next_player)
-                set_made = self.__check_for_set(card, next_player)
+                if print_trades:
+                    print "giving them", number_given
+                set_made, set_of = self.__check_for_set(card, next_player)
+                if print_trades:
+                    print "***", next_player, "made a set of", set_of, "'s !"
 
             else:
-                print "  Sorry, go fish!"
+                if print_trades:
+                    print "  Sorry, go fish!"
                 # TODO: dispatch that what they requested from whom and the result
                 self.__get_card_from_deck(next_player) # go fish (draw from draw pile)
 
@@ -158,7 +162,8 @@ class State(object):
             if self._end_of_play():
                 winners, most_sets = self.__get_winners() # gives out final rewards
                 self.__give_final_rewards(winners)
-                self.__print_results(winners, most_sets)
+                if print_end_state:
+                    self.__print_results(winners, most_sets)
                 return self.__get_margin_of_loss(most_sets)
             
             else:
