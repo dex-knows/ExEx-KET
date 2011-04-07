@@ -107,9 +107,9 @@ class State(object):
            """
         for player_name, hand in self.__player_hands.iteritems():
             if not hand:
-                print player_name, "ran out of cards."
+                #print player_name, "ran out of cards."
                 return True
-        return False
+        return False 
 
     def _end_of_play(self):
         """
