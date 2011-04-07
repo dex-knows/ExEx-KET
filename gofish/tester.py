@@ -41,7 +41,7 @@ if __name__ == "__main__":
     usage = "usage: %prog [options] agent \n"
     usage += '\n'
     usage += "available agents: "
-    for method in os.listdir("agents"):
+    for method in os.listdir(os.path.abspath("agents")):
         if 'Agent' in method:
             usage += '\n    ' + method.replace('.py','')
 
