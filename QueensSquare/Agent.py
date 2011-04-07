@@ -50,7 +50,7 @@ def FitnessGoal(Size):
     #perfect fitness is one in which all pairs of queens don't attack
     return (Size * (Size -1))/2  
 
-def SingleGenetic(Board, PopSize):
+def SingleGeneticAgent(Board, PopSize):
     """Genetic algorithm with an 'asexual' approach using the specified population size"""
     Populations = []
     #Controls how big of a population there should be.
@@ -115,7 +115,7 @@ def SingleGenetic(Board, PopSize):
         Board.IsEndState()
 
 @timer.timereaction
-def HillClimber(Board):
+def HillClimberAgent(Board):
     """An agent that tries moving one piece at a time to win.  It will start over if
     it ever reaches diminishing returns.
        """
