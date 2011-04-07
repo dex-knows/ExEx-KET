@@ -6,8 +6,8 @@ from agents.RandomAgent import RandomAgent
 VERSION = ".10"
 
 def run_game(agent):
-    josh = getattr(globals(), agent)("agent")
-    #josh = RandomAgent("AdverseAgent")
+    #josh = getattr(globals(), agent)("agent")
+    josh = AdverseAgent("AdverseAgent")
     ryan = RandomAgent("ryan")
     mitch = RandomAgent("mitch")
     helen = RandomAgent("helen")
