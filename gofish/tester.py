@@ -2,6 +2,7 @@ from state import State
 
 from agents import *
 from agents.RandomAgent import RandomAgent
+from agents.AdverseAgent import AdverseAgent
 
 VERSION = ".10"
 
