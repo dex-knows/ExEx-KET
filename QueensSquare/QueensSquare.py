@@ -1,4 +1,3 @@
-
 """This will contain the code that executes the Queens Square Game
    """
 import locale

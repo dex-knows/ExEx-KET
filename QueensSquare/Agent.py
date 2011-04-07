@@ -1,4 +1,3 @@
-
 """This contains the different agents that can play Queens Square
    """
 import random
@@ -6,9 +5,9 @@ from copy import deepcopy
 
 from GameState import Game
 from Helpful import * 
-import timeit
+import timer
 
-@timeit.timereaction
+@timer.timereaction
 def RandomAgent(Board):
     """An agent that will try to randomly place the queens to win."""
     Rows = range(Board.GetSize())
@@ -115,7 +114,7 @@ def SingleGenetic(Board, PopSize):
             NewPop = []
         Board.IsEndState()
 
-@timeit.timereaction
+@timer.timereaction
 def HillClimber(Board):
     """An agent that tries moving one piece at a time to win.  It will start over if
     it ever reaches diminishing returns.
@@ -185,17 +184,17 @@ def HillClimber(Board):
             start_over(Board)
             old_score = None
 
-@timeit.timereaction
+@timer.timereaction
 def TrueRandomAgentA(Board):
     while not Board.IsEndState():
         place_pieces_randomly(Board) # moves the queens on Board
 
-@timeit.timereaction
+@timer.timereaction
 def TrueRandomAgentB(Board):
     while not Board.IsEndState():
         place_pieces_randomly_one_to_a_row(Board)
 
-@timeit.timereaction
+@timer.timereaction
 def TrueRandomAgentC(Board):
     while not Board.IsEndState():
         place_pieces_randomly_one_to_a_row_and_column(Board)
