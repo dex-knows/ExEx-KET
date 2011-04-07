@@ -40,6 +40,7 @@ class State(object):
             self.__player_sets[player.name] = []
             self.__player_time_taken[player.name] = 0
             self.__player_turns_taken[player.name] = 0
+            player.setup(self)
 
     def __get_card_from_deck(self, player_name):
         """

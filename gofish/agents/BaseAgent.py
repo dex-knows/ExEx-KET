@@ -12,6 +12,9 @@ class BaseAgent(object):
     def __init__(self, name):
         self.name = name
 
+    def setup(self, state):
+        pass
+
     @timer.timeturn
     def take_turn(self, state):
         """This returns whom the agent wants to request a card from and what card (both strings).
