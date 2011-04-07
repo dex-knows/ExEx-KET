@@ -7,19 +7,19 @@ from GameState import Game
 import Agent
 
 VERSION = "0.20"
+NumRuns = 100
 
 def run_test(agent, desired_locale, wait=False):
     locale.setlocale(locale.LC_ALL, desired_locale)
 
     print "Starting Queens Square Test", "at", datetime.now()
-    print "    Using:", agent
+    print "    Using:", agent, "Number of Runs:", NumRuns
     print "" 
 
     for game_size in range(4,14):
         
         Test = Game()
         Test.NewGame(game_size)
-        NumRuns = 100
         TotalAttempts = 0
         duration = float(0)
         for x in xrange(NumRuns): 

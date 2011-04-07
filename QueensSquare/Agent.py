@@ -53,7 +53,7 @@ def FitnessGoal(Size):
     return (Size * (Size -1))/2  
 
 @timer.timereaction
-def SingleGeneticAgent(Board, PopSize=random.randrange(3,10)):
+def SingleGeneticAgent(Board, PopSize=8):
     """Genetic algorithm with an 'asexual' approach using the specified population size"""
     Populations = []
     #Controls how big of a population there should be.
