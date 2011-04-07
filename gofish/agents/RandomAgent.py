@@ -7,6 +7,8 @@ import timer
 
 from BaseAgent import BaseAgent
 
+__all__ = ['RandomAgent']
+
 class RandomAgent(BaseAgent):
     """
        """

@@ -4,6 +4,8 @@ import timer
 
 from BaseAgent import BaseAgent
 
+__all__ = ['AdverseAgent']
+
 class AdverseAgent(BaseAgent):
 
     def __init__(self, name):
