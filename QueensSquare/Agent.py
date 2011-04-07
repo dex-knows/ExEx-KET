@@ -4,6 +4,8 @@ import random
 from copy import deepcopy
 
 from GameState import Game
+from GameState import Queen
+
 from Helpful import * 
 import timer
 
@@ -50,7 +52,8 @@ def FitnessGoal(Size):
     #perfect fitness is one in which all pairs of queens don't attack
     return (Size * (Size -1))/2  
 
-def SingleGeneticAgent(Board, PopSize):
+@timer.timereaction
+def SingleGeneticAgent(Board, PopSize=random.randrange(3,10)):
     """Genetic algorithm with an 'asexual' approach using the specified population size"""
     Populations = []
     #Controls how big of a population there should be.
