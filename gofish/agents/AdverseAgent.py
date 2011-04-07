@@ -1,6 +1,6 @@
 import time
 import random
-import timeit
+import timer
 
 from BaseAgent import BaseAgent
 
@@ -10,7 +10,7 @@ class AdverseAgent(BaseAgent):
 	print "In subclass"
         self.name = name
         
-    @timeit.timeturn
+    @timer.timeturn
     def take_turn(self, state):
         return self._make_choice(self, state)
 
@@ -28,7 +28,7 @@ class AdverseAgent(BaseAgent):
         return highestPlayer, highestCard
         
 
-    @timeit.timereaction
+    @timer.timereaction
     def trade_notification(self, state, requester, card, requested_from,  number_given):
         if number_given == 0:
             self._known_hands[requester][card] += 1
