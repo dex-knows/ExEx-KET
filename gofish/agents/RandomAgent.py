@@ -1,6 +1,9 @@
 import time
 import random
-import timeit
+
+import sys
+sys.path.append("../")
+import timer
 
 from BaseAgent import BaseAgent
 
@@ -10,7 +13,7 @@ class RandomAgent(BaseAgent):
     def __init__(self, name):
         self.name = name
 
-    @timeit.timeturn
+    @timer.timeturn
     def take_turn(self, state):
         """
            """
