@@ -83,8 +83,21 @@ class Game(object):
 
     def PrintBoard(self):
         """Creates a graphical representation of what the board looks like"""
-        pass
+        GenericRow = []
+        Layout = []
+        for a in xrange(self.__Size):
+            Layout.append([])
+            for b in xrange(self.__Size):
+                Layout[a].append("[ ]")
 
+        for ThisQueen in self.Queens:
+            if self._ValidPosition(ThisQueen.Position):
+                Layout[ThisQueen.Position[0]][ThisQueen.Position[1]] = "[X]"
+
+        for a in xrange(len(Layout)):
+            for b in xrange(len(Layout[a])):
+                 print Layout[a][b],
+            print
     def GetAttempts(self):
         """Provides the number of attempts"""
         return self.__Attempts
