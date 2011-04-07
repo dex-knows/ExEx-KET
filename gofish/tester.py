@@ -1,17 +1,17 @@
 from state import State
 
 from agents import *
-from agents.RandomAgent import RandomAgent
-from agents.AdverseAgent import AdverseAgent
+#from agents.RandomAgent import RandomAgent
+#from agents.AdverseAgent import AdverseAgent
 
 VERSION = ".10"
 
 def run_game(agent):
     #josh = getattr(globals(), agent)("agent")
-    josh = AdverseAgent("AdverseAgent")
-    ryan = RandomAgent("ryan")
-    mitch = RandomAgent("mitch")
-    helen = RandomAgent("helen")
+    josh = AdverseAgent.AdverseAgent("AdverseAgent")
+    ryan = RandomAgent.RandomAgent("ryan")
+    mitch = RandomAgent.RandomAgent("mitch")
+    helen = RandomAgent.RandomAgent("helen")
 
     s = State()
     player_loss_margin = s.start_new_game(False, False, False, False, [josh,ryan,mitch,helen])
