@@ -1,14 +1,13 @@
+import sys
 from state import State
 
+#import agents
 from agents import *
-#from agents.RandomAgent import RandomAgent
-#from agents.AdverseAgent import AdverseAgent
 
 VERSION = ".10"
 
 def run_game(agent):
-    #josh = getattr(globals(), agent)("agent")
-    josh = AdverseAgent.AdverseAgent("AdverseAgent")
+    josh = getattr(getattr(sys.modules[__name__], agent), agent)("agent")
     ryan = RandomAgent.RandomAgent("ryan")
     mitch = RandomAgent.RandomAgent("mitch")
     helen = RandomAgent.RandomAgent("helen")
@@ -42,7 +41,7 @@ if __name__ == "__main__":
     usage = "usage: %prog [options] agent \n"
     usage += '\n'
     usage += "available agents: "
-    for method in os.listdir("agents"):
+    for method in os.listdir(os.path.abspath("agents")):
         if 'Agent' in method:
             usage += '\n    ' + method.replace('.py','')
 
